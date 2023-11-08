@@ -30,6 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  table_calendar: ^3.0.9
+  intl:
+  google_fonts:
+  date_picker_timeline:
 
 
   # The following adds the Cupertino Icons font to your application.
