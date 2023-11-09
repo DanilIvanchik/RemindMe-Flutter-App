@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_remind_me_app/main_page.dart';
+import 'package:flutter_remind_me_app/pages/main_page.dart';
 
 void main() {
   runApp(const RemindMe());

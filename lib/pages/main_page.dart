@@ -1,7 +1,9 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_remind_me_app/buttons/button.dart';
-import 'package:flutter_remind_me_app/schedule_page.dart';
+import 'package:flutter_remind_me_app/pages/add_task_bar_page.dart';
+import 'package:flutter_remind_me_app/pages/schedule_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,9 +21,11 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
+      backgroundColor: Colors.white,
       body: Column(children: [
         addTaskBar,
         Container(
+          margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: DatePicker(
             currentDate,
             height: 100,
@@ -29,8 +33,24 @@ class _MainPageState extends State<MainPage> {
             initialSelectedDate: currentDate,
             selectionColor: Colors.pink.shade100,
             selectedTextColor: Colors.white,
-            dateTextStyle: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.w600, color: Colors.grey),
+            dateTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey)),
+            dayTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey)),
+            monthTextStyle: GoogleFonts.lato(
+                textStyle: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey)),
+            onDateChange: (date) {
+              date = currentDate;
+            },
           ),
         )
       ]),
@@ -41,17 +61,24 @@ class _MainPageState extends State<MainPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 22.0),
+        const Padding(
+          padding: EdgeInsets.only(left: 22.0),
           child: Text(
             "Today",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: MyButton(lable: "Add task", onTap: () => null),
-        )
+        Container(
+            margin: const EdgeInsets.only(right: 10),
+            child: MyButton(
+              lable: "Add task",
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddTask(
+                            chosenDate: currentDate,
+                          ))),
+            ))
       ],
     );
   }
@@ -64,7 +91,7 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.only(left: 5),
             child: Text(
               DateFormat.MMMM().format(currentDate),
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
                   color: Colors.black),
@@ -82,7 +109,7 @@ class _MainPageState extends State<MainPage> {
         elevation: 0,
         actions: [
           GestureDetector(
-            onDoubleTap: () {
+            onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => SchedulePage(),
               ));

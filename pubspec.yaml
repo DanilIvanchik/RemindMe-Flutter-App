@@ -33,6 +33,7 @@ dependencies:
   table_calendar: ^3.0.9
   intl:
   google_fonts:
+  get:
   date_picker_timeline:
 
 
