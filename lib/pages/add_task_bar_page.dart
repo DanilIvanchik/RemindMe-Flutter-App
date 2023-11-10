@@ -3,10 +3,15 @@ import 'package:flutter_remind_me_app/util/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AddTask extends StatelessWidget {
+class AddTask extends StatefulWidget {
   DateTime chosenDate;
   AddTask({super.key, required this.chosenDate});
 
+  @override
+  State<AddTask> createState() => _AddTaskState();
+}
+
+class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +32,7 @@ class AddTask extends StatelessWidget {
         title: Row(
           children: [
             Text(
-              DateFormat.MMMMd().format(chosenDate),
+              DateFormat.MMMMd().format(widget.chosenDate),
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,
@@ -36,7 +41,7 @@ class AddTask extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: Text(
-                DateFormat.y().format(chosenDate),
+                DateFormat.y().format(widget.chosenDate),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -50,15 +55,38 @@ class AddTask extends StatelessWidget {
         padding: EdgeInsets.only(left: 70, right: 70, top: 15),
         child: SingleChildScrollView(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               "Add Task",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
-            AddTaskInputFiels(hint: "hint", title: "title")
+            const AddTaskInputFiels(hint: "Enter task's title", title: "Title"),
+            const AddTaskInputFiels(hint: "Enter your note", title: "Note"),
+            AddTaskInputFiels(
+              hint: DateFormat.yMd().format(widget.chosenDate),
+              title: "Date",
+              passedWidget: IconButton(
+                icon: const Icon(
+                  Icons.calendar_today_outlined,
+                  color: Colors.grey,
+                ),
+                onPressed: () {
+                  _getDateFromUser();
+                },
+              ),
+            )
           ],
         )),
       ),
     );
+  }
+
+  _getDateFromUser() async {
+    DateTime? _datePicker = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2023),
+        lastDate: DateTime(2100));
   }
 }
