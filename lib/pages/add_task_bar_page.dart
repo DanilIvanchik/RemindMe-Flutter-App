@@ -12,6 +12,9 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
+  String _endTime = "9:30 PM";
+  String _startTime = DateFormat("hh:mm a").format(DateTime.now()).toString();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +78,41 @@ class _AddTaskState extends State<AddTask> {
                   _getDateFromUser();
                 },
               ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                    child: AddTaskInputFiels(
+                  title: "Start time",
+                  hint: _startTime,
+                  passedWidget: IconButton(
+                    onPressed: () {
+                      _getTimeFromUser(true);
+                    },
+                    icon: Icon(
+                      Icons.access_time_filled_rounded,
+                      color: Colors.grey,
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: 12,
+                ),
+                Expanded(
+                    child: AddTaskInputFiels(
+                  title: "End time",
+                  hint: _endTime,
+                  passedWidget: IconButton(
+                    onPressed: () {
+                      _getTimeFromUser(false);
+                    },
+                    icon: Icon(
+                      Icons.access_time_filled_rounded,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ))
+              ],
             )
           ],
         )),
@@ -88,5 +126,35 @@ class _AddTaskState extends State<AddTask> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2023),
         lastDate: DateTime(2100));
+
+    if (_datePicker != null) {
+      setState(() {
+        widget.chosenDate = _datePicker;
+      });
+    }
+  }
+
+  _getTimeFromUser(bool isStartTime) async {
+    var pickedTime = await _showTimePicker();
+    String formatedTime = pickedTime.format(context);
+
+    if (isStartTime) {
+      setState(() {
+        _startTime = formatedTime;
+      });
+    } else {
+      setState(() {
+        _endTime = formatedTime;
+      });
+    }
+  }
+
+  _showTimePicker() {
+    return showTimePicker(
+        initialEntryMode: TimePickerEntryMode.input,
+        context: context,
+        initialTime: TimeOfDay(
+            hour: int.parse(_startTime.split(":")[0]),
+            minute: int.parse(_startTime.split(":")[1].split(" ")[0])));
   }
 }
