@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_remind_me_app/buttons/button.dart';
+import 'package:flutter_remind_me_app/controllers/task_controller.dart';
+import 'package:flutter_remind_me_app/models/task.dart';
 import 'package:flutter_remind_me_app/util/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +15,7 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
+  final TaskController _taskController = Get.put(TaskController());
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _noteEditingController = TextEditingController();
   String _endTime = "9:30 PM";
@@ -253,6 +256,7 @@ class _AddTaskState extends State<AddTask> {
   _validateData() {
     if (_titleEditingController.text.isNotEmpty &&
         _noteEditingController.text.isNotEmpty) {
+      _addTaskToDB();
       Navigator.of(context).pop();
     } else if (_titleEditingController.text.isEmpty ||
         _noteEditingController.text.isEmpty) {
@@ -302,5 +306,19 @@ class _AddTaskState extends State<AddTask> {
         )
       ],
     );
+  }
+
+  void _addTaskToDB() {
+    _taskController.addTask(
+        task: Task(
+            note: _noteEditingController.text,
+            title: _titleEditingController.text,
+            date: DateFormat.yMd().format(widget.chosenDate),
+            startTime: _startTime,
+            endTime: _endTime,
+            remind: _selectedReminder,
+            repeat: _selectedRepeat,
+            color: _selectedColor,
+            isCompleted: false));
   }
 }
