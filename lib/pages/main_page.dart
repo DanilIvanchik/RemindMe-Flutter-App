@@ -22,39 +22,43 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: appBar(context),
       backgroundColor: Colors.white,
-      body: Column(children: [
-        addTaskBar,
-        Container(
-          margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-          child: DatePicker(
-            currentDate,
-            height: 100,
-            width: 80,
-            initialSelectedDate: currentDate,
-            selectionColor: Colors.pink.shade100,
-            selectedTextColor: Colors.white,
-            dateTextStyle: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey)),
-            dayTextStyle: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey)),
-            monthTextStyle: GoogleFonts.lato(
-                textStyle: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey)),
-            onDateChange: (date) {
-              date = currentDate;
-            },
-          ),
-        )
-      ]),
+      body: mainPageBody(),
     );
+  }
+
+  Column mainPageBody() {
+    return Column(children: [
+      addTaskBar,
+      Container(
+        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
+        child: DatePicker(
+          currentDate,
+          height: 100,
+          width: 80,
+          initialSelectedDate: currentDate,
+          selectionColor: Colors.pink.shade100,
+          selectedTextColor: Colors.white,
+          dateTextStyle: GoogleFonts.lato(
+              textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey)),
+          dayTextStyle: GoogleFonts.lato(
+              textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey)),
+          monthTextStyle: GoogleFonts.lato(
+              textStyle: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey)),
+          onDateChange: (date) {
+            date = currentDate;
+          },
+        ),
+      )
+    ]);
   }
 
   Row get addTaskBar {

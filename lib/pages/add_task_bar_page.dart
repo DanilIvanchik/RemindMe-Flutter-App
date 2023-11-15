@@ -38,174 +38,179 @@ class _AddTaskState extends State<AddTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pop();
-          },
-          child: const Icon(
-            Icons.arrow_back_ios,
-            size: 20,
-            color: Colors.black,
+      appBar: taskPageAppBar(context),
+      body: taskPageBody(),
+    );
+  }
+
+  Container taskPageBody() {
+    return Container(
+      padding: EdgeInsets.only(left: 70, right: 70, top: 15),
+      child: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Add Task",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
           ),
-        ),
-        title: Row(
-          children: [
-            Text(
-              DateFormat.MMMMd().format(widget.chosenDate),
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                  color: Colors.black),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Text(
-                DateFormat.y().format(widget.chosenDate),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.pink.shade100),
+          AddTaskInputFiels(
+            hint: "Enter task's title",
+            title: "Title",
+            controller: _titleEditingController,
+          ),
+          AddTaskInputFiels(
+            hint: "Enter your note",
+            title: "Note",
+            controller: _noteEditingController,
+          ),
+          AddTaskInputFiels(
+            hint: DateFormat.yMd().format(widget.chosenDate),
+            title: "Date",
+            passedWidget: IconButton(
+              icon: const Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.grey,
               ),
+              onPressed: () {
+                _getDateFromUser();
+              },
             ),
-          ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: AddTaskInputFiels(
+                title: "Start time",
+                hint: _startTime,
+                passedWidget: IconButton(
+                  onPressed: () {
+                    _getTimeFromUser(true);
+                  },
+                  icon: Icon(
+                    Icons.access_time_filled_rounded,
+                    color: Colors.grey,
+                  ),
+                ),
+              )),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                  child: AddTaskInputFiels(
+                title: "End time",
+                hint: _endTime,
+                passedWidget: IconButton(
+                  onPressed: () {
+                    _getTimeFromUser(false);
+                  },
+                  icon: const Icon(
+                    Icons.access_time_filled_rounded,
+                    color: Colors.grey,
+                  ),
+                ),
+              ))
+            ],
+          ),
+          AddTaskInputFiels(
+            hint: "$_selectedReminder hours early",
+            title: "Remind",
+            passedWidget: DropdownButton(
+              items: remindList.map<DropdownMenuItem<String>>((int value) {
+                return DropdownMenuItem<String>(
+                  value: value.toString(),
+                  child: Text(value.toString()),
+                );
+              }).toList(),
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.grey,
+              ),
+              iconSize: 32,
+              underline: Container(),
+              elevation: 4,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedReminder = int.parse(newValue!);
+                });
+              },
+            ),
+          ),
+          AddTaskInputFiels(
+            hint: "$_selectedRepeat",
+            title: "Repeat",
+            passedWidget: DropdownButton(
+              items: RepeatList.map<DropdownMenuItem<String>>((String? value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value!),
+                );
+              }).toList(),
+              icon: const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.grey,
+              ),
+              iconSize: 32,
+              underline: Container(),
+              elevation: 4,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedRepeat = newValue!;
+                });
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 18,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _colorPallet(),
+              MyButton(lable: "Create task", onTap: () => _validateData())
+            ],
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+        ],
+      )),
+    );
+  }
+
+  AppBar taskPageAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: const Icon(
+          Icons.arrow_back_ios,
+          size: 20,
+          color: Colors.black,
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 70, right: 70, top: 15),
-        child: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Add Task",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+      title: Row(
+        children: [
+          Text(
+            DateFormat.MMMMd().format(widget.chosenDate),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 25, color: Colors.black),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              DateFormat.y().format(widget.chosenDate),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
+                  color: Colors.pink.shade100),
             ),
-            AddTaskInputFiels(
-              hint: "Enter task's title",
-              title: "Title",
-              controller: _titleEditingController,
-            ),
-            AddTaskInputFiels(
-              hint: "Enter your note",
-              title: "Note",
-              controller: _noteEditingController,
-            ),
-            AddTaskInputFiels(
-              hint: DateFormat.yMd().format(widget.chosenDate),
-              title: "Date",
-              passedWidget: IconButton(
-                icon: const Icon(
-                  Icons.calendar_today_outlined,
-                  color: Colors.grey,
-                ),
-                onPressed: () {
-                  _getDateFromUser();
-                },
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                    child: AddTaskInputFiels(
-                  title: "Start time",
-                  hint: _startTime,
-                  passedWidget: IconButton(
-                    onPressed: () {
-                      _getTimeFromUser(true);
-                    },
-                    icon: Icon(
-                      Icons.access_time_filled_rounded,
-                      color: Colors.grey,
-                    ),
-                  ),
-                )),
-                const SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                    child: AddTaskInputFiels(
-                  title: "End time",
-                  hint: _endTime,
-                  passedWidget: IconButton(
-                    onPressed: () {
-                      _getTimeFromUser(false);
-                    },
-                    icon: const Icon(
-                      Icons.access_time_filled_rounded,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ))
-              ],
-            ),
-            AddTaskInputFiels(
-              hint: "$_selectedReminder hours early",
-              title: "Remind",
-              passedWidget: DropdownButton(
-                items: remindList.map<DropdownMenuItem<String>>((int value) {
-                  return DropdownMenuItem<String>(
-                    value: value.toString(),
-                    child: Text(value.toString()),
-                  );
-                }).toList(),
-                icon: Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.grey,
-                ),
-                iconSize: 32,
-                underline: Container(),
-                elevation: 4,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedReminder = int.parse(newValue!);
-                  });
-                },
-              ),
-            ),
-            AddTaskInputFiels(
-              hint: "$_selectedRepeat",
-              title: "Repeat",
-              passedWidget: DropdownButton(
-                items:
-                    RepeatList.map<DropdownMenuItem<String>>((String? value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value!),
-                  );
-                }).toList(),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Colors.grey,
-                ),
-                iconSize: 32,
-                underline: Container(),
-                elevation: 4,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedRepeat = newValue!;
-                  });
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _colorPallet(),
-                MyButton(lable: "Create task", onTap: () => _validateData())
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-          ],
-        )),
+          ),
+        ],
       ),
     );
   }
