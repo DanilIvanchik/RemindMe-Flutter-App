@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_remind_me_app/buttons/button.dart';
 import 'package:flutter_remind_me_app/controllers/task_controller.dart';
 import 'package:flutter_remind_me_app/models/task.dart';
-import 'package:flutter_remind_me_app/util/input_field.dart';
+import 'package:flutter_remind_me_app/widgets/input_field.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
