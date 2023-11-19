@@ -1,16 +1,4 @@
-# flutter_remind_me_app
+# RemindMe
 
-A new Flutter project.
+RemindMe is a versatile application designed to keep users informed and organized by providing timely reminders for special occasions such as birthdays, anniversaries, and other significant events. The project also functions as a planner, offering a convenient way to manage tasks and deadlines. The application's key feature is its ability to fetch and integrate various holiday packages, making it a comprehensive tool for staying connected and celebrating diverse cultural events.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
