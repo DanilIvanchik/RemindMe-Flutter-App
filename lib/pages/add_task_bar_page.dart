@@ -313,8 +313,8 @@ class _AddTaskState extends State<AddTask> {
     );
   }
 
-  void _addTaskToDB() {
-    _taskController.addTask(
+  void _addTaskToDB() async {
+    var intValue = await _taskController.addTask(
         task: Task(
             note: _noteEditingController.text,
             title: _titleEditingController.text,
@@ -325,5 +325,6 @@ class _AddTaskState extends State<AddTask> {
             repeat: _selectedRepeat,
             color: _selectedColor,
             isCompleted: false));
+    print(intValue);
   }
 }
